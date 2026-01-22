@@ -1,0 +1,37 @@
+@startuml Context Diagram - Hotel System
+
+!define RECTANGLE class
+
+rectangle "Customer" as Customer
+rectangle "Receptionist" as Receptionist
+rectangle "Finance/Cashier" as Finance
+rectangle "Manager" as Manager
+
+component "Hotel System" as HotelSystem
+
+' Customer interactions
+Customer --> HotelSystem : Booking Request
+HotelSystem --> Customer : Booking Confirmation
+Customer --> HotelSystem : Payment
+Customer --> HotelSystem : Check-in/Check-out
+HotelSystem --> Customer : Invoice
+
+' Receptionist interactions
+Receptionist --> HotelSystem : Process Booking Request
+Receptionist --> HotelSystem : Check Room Availability
+Receptionist --> HotelSystem : Create Booking
+Receptionist --> HotelSystem : Check-in/Check-out
+HotelSystem --> Receptionist : Room Status
+HotelSystem --> Receptionist : Customer Info
+HotelSystem --> Receptionist : Payment Status
+
+' Finance/Cashier interactions
+Finance --> HotelSystem : Confirm Payment
+HotelSystem --> Finance : Payment Info
+HotelSystem --> Finance : Booking Details
+
+' Manager interactions
+Manager --> HotelSystem : Hotel Management
+HotelSystem --> Manager : Hotel Reports & Info
+
+@enduml

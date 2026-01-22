@@ -1,0 +1,70 @@
+@startuml DFD Level 1 - Hotel System
+
+!define RECTANGLE class
+
+' External Entities
+rectangle "Customer" as Customer
+rectangle "Receptionist" as Receptionist
+rectangle "Finance/Cashier" as Finance
+rectangle "Manager" as Manager
+
+' Processes
+rectangle "1: Process\nBooking Request" as ProcessBooking
+rectangle "2: Check Room\nAvailability" as CheckRoom
+rectangle "3: Create Booking" as CreateBooking
+rectangle "4: Process Payment" as ProcessPayment
+rectangle "5: Check-in/Check-out" as CheckInOut
+rectangle "6: Generate Reports" as GenerateReports
+
+' Data Store
+database "Hotel Data Store" as DataStore {
+  [Customer Data]
+  [Booking Data]
+  [Room Data]
+  [Payment Data]
+  [Invoice Data]
+  [Service Data]
+}
+
+' Customer flows
+Customer --> ProcessBooking : Booking Request
+CreateBooking --> Customer : Booking Confirmation
+Customer --> ProcessPayment : Payment
+CheckInOut --> Customer : Invoice
+Customer --> CheckInOut : Check-in/Check-out Request
+
+' Receptionist flows
+Receptionist --> ProcessBooking : Process Booking Request
+ProcessBooking --> Receptionist : Customer Info
+CheckRoom --> Receptionist : Room Status
+Receptionist --> CheckRoom : Check Room Availability
+Receptionist --> CreateBooking : Create Booking
+CreateBooking --> Receptionist : Booking Details
+Receptionist --> CheckInOut : Check-in/Check-out
+CheckInOut --> Receptionist : Payment Status
+
+' Finance/Cashier flows
+Finance --> ProcessPayment : Confirm Payment
+ProcessPayment --> Finance : Payment Info
+ProcessPayment --> Finance : Booking Details
+
+' Manager flows
+GenerateReports --> Manager : Hotel Reports & Info
+Manager --> GenerateReports : Hotel Management
+
+' Process to Data Store flows
+ProcessBooking --> DataStore : Read/Write Customer
+CheckRoom --> DataStore : Read Room
+CreateBooking --> DataStore : Write Booking
+ProcessPayment --> DataStore : Read/Write Payment
+CheckInOut --> DataStore : Read/Write Booking\nRead/Write Invoice\nRead/Write Service
+GenerateReports --> DataStore : Read Customer\nRead Booking\nRead Room\nRead Payment\nRead Invoice
+
+' Inter-process flows
+ProcessBooking --> CheckRoom : Room Availability Request
+CheckRoom --> ProcessBooking : Room Availability Result
+ProcessBooking --> CreateBooking : Valid Booking Request
+ProcessPayment --> CheckInOut : Payment Confirmation
+CreateBooking --> ProcessPayment : Booking Details for Payment
+
+@enduml

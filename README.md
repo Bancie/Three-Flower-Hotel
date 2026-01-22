@@ -37,3 +37,4 @@
 - Khi khách check-out:
   - Khách hàng nhận hóa đơn tổng hợp
   - Hoàn tất quá trình sử dụng dịch vụ tại khách sạn
+
