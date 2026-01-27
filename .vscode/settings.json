@@ -1,4 +1,30 @@
 {
   "plantuml.render": "PlantUMLServer",
-  "plantuml.server": "https://www.plantuml.com/plantuml"
+  "plantuml.server": "https://www.plantuml.com/plantuml",
+  "sqltools.connections": [
+    {
+      "name": "brain",
+      "driver": "MySQL",
+      "server": "localhost",
+      "port": 3306,
+      "username": "root",
+      "password": "root1234",
+      "database": "mysql"
+    },
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "ssh": "Disabled",
+      "previewLimit": 500,
+      "server": "localhost",
+      "port": 3307,
+      "driver": "MySQL",
+      "name": "hotel",
+      "database": "hotel-bahoa",
+      "username": "root",
+      "askForPassword": true
+    }
+  ]
 }
