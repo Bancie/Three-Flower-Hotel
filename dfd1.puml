@@ -1,0 +1,25 @@
+@startuml
+!pragma allowmixing
+
+title Hotel System: DFD 1
+
+object "Khách hàng" as kh 
+object "Lễ Tân" as lt
+
+object "1" as Process1 {
+    Hiển thị và đặt phòng
+}
+
+object "2" as Process2 {
+    Xác nhận đặt phòng & Tạo hoá đơn
+}
+
+Process1 --> kh : Thông tin phòng
+kh --> Process1 : Thông tin đặt phòng
+Process2 --> kh : Hoá đơn
+
+Process1 --> lt : Thông tin phòng
+Process1 --> lt : Thông tin đặt phòng
+lt --> Process2 : Đơn đặt phòng
+
+@enduml

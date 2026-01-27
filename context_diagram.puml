@@ -1,5 +1,7 @@
 @startuml Context Diagram - Hotel System
 
+title DFD 0
+
 !define RECTANGLE class
 
 rectangle "Customer" as Customer

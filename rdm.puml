@@ -1,0 +1,67 @@
+@startuml
+
+title Hotel System: RDM
+
+skinparam linetype ortho
+
+entity "KHACH_HANG" as khach_hang {
+    * ma_khach_hang : INT <<PK>>
+    --
+    ho_ten : STRING
+    so_dien_thoai : STRING
+    email : STRING
+    so_giay_to : STRING
+}
+
+entity "LOAI_PHONG" as loai_phong {
+    * ma_loai_phong : INT <<PK>>
+    --
+    ten_loai_phong : STRING
+    gia_phong : DECIMAL
+    mo_ta : STRING
+}
+
+entity "PHONG" as phong {
+    * ma_phong : INT <<PK>>
+    --
+    so_phong : STRING
+    trang_thai_phong : STRING
+    * ma_loai_phong : INT <<FK>>
+}
+
+entity "DAT_PHONG" as dat_phong {
+    * ma_dat_phong : INT <<PK>>
+    --
+    ngay_nhan_phong : DATE
+    ngay_tra_phong : DATE
+    trang_thai : STRING
+    * ma_khach_hang : INT <<FK>>
+    * ma_phong : INT <<FK>>
+}
+
+entity "HOA_DON" as hoa_don {
+    * ma_hoa_don : INT <<PK>>
+    --
+    tong_tien : DECIMAL
+    ngay_lap : DATE
+    * ma_dat_phong : INT <<FK>>
+}
+
+entity "THANH_TOAN" as thanh_toan {
+    * ma_thanh_toan : INT <<PK>>
+    --
+    ngay_thanh_toan : DATE
+    phuong_thuc : STRING
+    so_tien : DECIMAL
+    trang_thai : STRING
+    * ma_hoa_don : INT <<FK>>
+}
+
+' Relationships
+khach_hang ||--o{ dat_phong
+loai_phong ||--o{ phong
+phong ||--o{ dat_phong
+dat_phong ||--|| hoa_don
+hoa_don ||--o{ thanh_toan
+
+@enduml
