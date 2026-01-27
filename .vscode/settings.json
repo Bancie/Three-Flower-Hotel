@@ -22,7 +22,7 @@
       "port": 3307,
       "driver": "MySQL",
       "name": "hotel",
-      "database": "hotel-bahoa",
+      "database": "hotel_bahoa",
       "username": "root",
       "askForPassword": true
     }
