@@ -10,7 +10,7 @@ from ..auth import require_role
 router = APIRouter()
 
 
-@router.get("/", response_model=List[KhachHangOut])
+@router.get("", response_model=List[KhachHangOut])
 def list_customers(
     db: Session = Depends(get_db),
     _=Depends(require_role("le_tan")),
@@ -30,7 +30,7 @@ def get_customer(
     return item
 
 
-@router.post("/", response_model=KhachHangOut)
+@router.post("", response_model=KhachHangOut)
 def create_customer(
     data: KhachHangCreate,
     db: Session = Depends(get_db),

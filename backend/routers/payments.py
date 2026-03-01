@@ -11,7 +11,7 @@ from ..auth import require_role
 router = APIRouter()
 
 
-@router.get("/", response_model=List[ThanhToanOut])
+@router.get("", response_model=List[ThanhToanOut])
 def list_payments(
     db: Session = Depends(get_db),
     _=Depends(require_role("le_tan")),
@@ -31,7 +31,7 @@ def get_payment(
     return item
 
 
-@router.post("/", response_model=ThanhToanOut)
+@router.post("", response_model=ThanhToanOut)
 def create_payment(
     data: ThanhToanCreate,
     db: Session = Depends(get_db),

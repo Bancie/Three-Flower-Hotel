@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -13,8 +13,14 @@ export default function Register() {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { register } = useAuth();
+  const { user, register } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate(user.vai_tro === 'le_tan' ? '/le-tan' : '/khach-hang', { replace: true });
+    }
+  }, [user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +28,6 @@ export default function Register() {
     setLoading(true);
     try {
       await register(form);
-      navigate('/khach-hang');
     } catch (err) {
       setError(err.response?.data?.detail || 'Đã xảy ra lỗi');
     } finally {

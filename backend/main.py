@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .database import init_db
 from .routers import auth, room_types, rooms, customers, bookings, invoices, payments, statistics, accounts
 
-app = FastAPI(title="Three Flower Hotel API", version="1.0.0")
+app = FastAPI(title="Three Flower Hotel API", version="1.0.0", redirect_slashes=False)
 
 app.add_middleware(
     CORSMiddleware,

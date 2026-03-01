@@ -44,6 +44,7 @@ def init_db():
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
         """))
 
+        conn.execute(text("SET FOREIGN_KEY_CHECKS = 0"))
         tables_pk = [
             ("KHACH_HANG", "ma_khach_hang"),
             ("LOAI_PHONG", "ma_loai_phong"),
@@ -55,9 +56,10 @@ def init_db():
         for table, pk in tables_pk:
             try:
                 conn.execute(text(
-                    f"ALTER TABLE `{table}` MODIFY `{pk}` INT AUTO_INCREMENT"
+                    f"ALTER TABLE `{table}` MODIFY `{pk}` INT NOT NULL AUTO_INCREMENT"
                 ))
             except Exception:
                 pass
+        conn.execute(text("SET FOREIGN_KEY_CHECKS = 1"))
 
         conn.commit()

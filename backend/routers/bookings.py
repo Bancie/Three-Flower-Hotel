@@ -23,7 +23,7 @@ def _to_out(b: DatPhong) -> dict:
     }
 
 
-@router.get("/", response_model=List[DatPhongOut])
+@router.get("", response_model=List[DatPhongOut])
 def list_bookings(
     db: Session = Depends(get_db),
     current_user: TaiKhoan = Depends(get_current_user),
@@ -56,7 +56,7 @@ def get_booking(
     return _to_out(b)
 
 
-@router.post("/", response_model=DatPhongOut)
+@router.post("", response_model=DatPhongOut)
 def create_booking(
     data: DatPhongCreate,
     db: Session = Depends(get_db),

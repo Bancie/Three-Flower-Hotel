@@ -21,7 +21,7 @@ def _to_out(t: TaiKhoan) -> dict:
     }
 
 
-@router.get("/", response_model=List[TaiKhoanOut])
+@router.get("", response_model=List[TaiKhoanOut])
 def list_accounts(
     db: Session = Depends(get_db),
     _=Depends(require_role("le_tan")),
@@ -30,7 +30,7 @@ def list_accounts(
     return [_to_out(t) for t in items]
 
 
-@router.post("/", response_model=TaiKhoanOut)
+@router.post("", response_model=TaiKhoanOut)
 def create_account(
     data: TaiKhoanCreate,
     db: Session = Depends(get_db),

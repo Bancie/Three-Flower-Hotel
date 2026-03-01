@@ -36,7 +36,7 @@ def register(req: RegisterRequest, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(tai_khoan)
 
-    token = create_access_token({"sub": tai_khoan.ma_tai_khoan})
+    token = create_access_token({"sub": str(tai_khoan.ma_tai_khoan)})
     return TokenResponse(
         access_token=token,
         vai_tro=tai_khoan.vai_tro,
@@ -62,7 +62,7 @@ def login(req: LoginRequest, db: Session = Depends(get_db)):
     elif user.vai_tro == "le_tan":
         ho_ten = "Lễ tân"
 
-    token = create_access_token({"sub": user.ma_tai_khoan})
+    token = create_access_token({"sub": str(user.ma_tai_khoan)})
     return TokenResponse(
         access_token=token,
         vai_tro=user.vai_tro,

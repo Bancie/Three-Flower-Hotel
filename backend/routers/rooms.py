@@ -22,7 +22,7 @@ def _to_out(p: Phong) -> dict:
     return d
 
 
-@router.get("/", response_model=List[PhongOut])
+@router.get("", response_model=List[PhongOut])
 def list_rooms(db: Session = Depends(get_db)):
     items = db.query(Phong).options(joinedload(Phong.loai_phong)).all()
     return [_to_out(p) for p in items]
@@ -36,7 +36,7 @@ def get_room(ma_phong: int, db: Session = Depends(get_db)):
     return _to_out(p)
 
 
-@router.post("/", response_model=PhongOut)
+@router.post("", response_model=PhongOut)
 def create_room(
     data: PhongCreate,
     db: Session = Depends(get_db),

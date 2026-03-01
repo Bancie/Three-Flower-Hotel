@@ -22,7 +22,7 @@ def _to_out(h: HoaDon) -> dict:
     }
 
 
-@router.get("/", response_model=List[HoaDonOut])
+@router.get("", response_model=List[HoaDonOut])
 def list_invoices(
     db: Session = Depends(get_db),
     current_user: TaiKhoan = Depends(get_current_user),
@@ -59,7 +59,7 @@ def get_invoice(
     return _to_out(h)
 
 
-@router.post("/", response_model=HoaDonOut)
+@router.post("", response_model=HoaDonOut)
 def create_invoice(
     data: HoaDonCreate,
     db: Session = Depends(get_db),

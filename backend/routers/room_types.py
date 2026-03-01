@@ -10,7 +10,7 @@ from ..auth import get_current_user, require_role
 router = APIRouter()
 
 
-@router.get("/", response_model=List[LoaiPhongOut])
+@router.get("", response_model=List[LoaiPhongOut])
 def list_room_types(db: Session = Depends(get_db)):
     return db.query(LoaiPhong).all()
 
@@ -23,7 +23,7 @@ def get_room_type(ma_loai_phong: int, db: Session = Depends(get_db)):
     return item
 
 
-@router.post("/", response_model=LoaiPhongOut)
+@router.post("", response_model=LoaiPhongOut)
 def create_room_type(
     data: LoaiPhongCreate,
     db: Session = Depends(get_db),

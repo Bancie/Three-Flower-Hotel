@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -6,16 +6,21 @@ export default function Login() {
   const [form, setForm] = useState({ ten_dang_nhap: '', mat_khau: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { user, login } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate(user.vai_tro === 'le_tan' ? '/le-tan' : '/khach-hang', { replace: true });
+    }
+  }, [user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
     try {
-      const user = await login(form.ten_dang_nhap, form.mat_khau);
-      navigate(user.vai_tro === 'le_tan' ? '/le-tan' : '/khach-hang');
+      await login(form.ten_dang_nhap, form.mat_khau);
     } catch (err) {
       setError(err.response?.data?.detail || 'Đã xảy ra lỗi');
     } finally {
