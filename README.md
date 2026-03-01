@@ -12,6 +12,7 @@ Hệ thống web app quản lý khách sạn **Three Flower Hotel** hỗ trợ h
 - [Frontend](#frontend)
 - [Phân quyền vai trò](#phân-quyền-vai-trò)
 - [Hướng dẫn cài đặt](#hướng-dẫn-cài-đặt)
+- [Xử lý lỗi: Port đã được sử dụng](#xử-lý-lỗi-port-đã-được-sử-dụng)
 - [Hướng dẫn sử dụng](#hướng-dẫn-sử-dụng)
 - [Tài liệu thiết kế](#tài-liệu-thiết-kế)
 
@@ -437,6 +438,47 @@ npm run dev
 ### 7. Truy cập ứng dụng
 
 Mở trình duyệt và truy cập: **http://localhost:5173**
+
+---
+
+## Xử lý lỗi: Port đã được sử dụng
+
+Khi chạy backend, nếu gặp lỗi **`[Errno 48] Address already in use`** nghĩa là port 8000 đang bị process khác chiếm (thường là phiên uvicorn cũ chưa tắt).
+
+**1. Kiểm tra process đang dùng port 8000**
+
+```bash
+lsof -i :8000
+```
+
+Cột **PID** là số ID process. Chỉ xem PID: `lsof -ti :8000`
+
+**2. Dừng process**
+
+- Kill từng process: `kill <PID>`
+- Kill tất cả process đang dùng port 8000:
+
+```bash
+kill $(lsof -ti :8000)
+```
+
+- Nếu process không tắt, dùng kill cứng:
+
+```bash
+kill -9 $(lsof -ti :8000)
+```
+
+**3. Kiểm tra port đã trống**
+
+```bash
+lsof -i :8000
+```
+
+Không có output thì port đã trống. Chạy lại backend:
+
+```bash
+python -m uvicorn backend.main:app --reload --port 8000
+```
 
 ---
 
