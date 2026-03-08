@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ERD - Ứng dụng Quản lý Khách sạn (Chen style)</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; padding: 24px; background: #f5f5f5; }
+    h1 { font-size: 1.25rem; color: #333; margin-bottom: 8px; }
+    .sub { font-size: 0.875rem; color: #666; margin-bottom: 16px; }
+    .wrap { overflow: auto; max-width: 100%; background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 24px; }
+    svg { display: block; }
+    .entity-rect { fill: #e3f2fd; stroke: #1976d2; stroke-width: 2; }
+    .diamond { fill: #fff3e0; stroke: #e65100; stroke-width: 2; }
+    .attr-oval { fill: #ffffff; stroke: #616161; stroke-width: 1.5; }
+    .attr-oval-pk { fill: #455a64; stroke: #263238; stroke-width: 1.5; }
+    .attr-text-pk { font-size: 9px; fill: #eceff1; }
+    .link { fill: none; stroke: #424242; stroke-width: 1.2; }
+    .cardinality { font-size: 10px; fill: #333; font-weight: 600; }
+    .entity-title { font-size: 11px; font-weight: 700; fill: #1565c0; }
+    .attr-text { font-size: 9px; fill: #333; }
+    .rel-text { font-size: 10px; font-weight: 600; fill: #bf360c; }
+  </style>
+</head>
+<body>
+  <h1>Lược đồ ERD - Ứng dụng Quản lý Khách sạn (Three Flower Hotel)</h1>
+  <p class="sub">Phân tích Thiết kế Hệ thống Thông tin — Ký hiệu Chen (thực thể chữ nhật, quan hệ thoi, thuộc tính oval nối với thực thể, khóa chính = oval màu đậm, bản số (min,max))</p>
+  <div class="wrap">
+    <svg width="1400" height="820" viewBox="0 0 1400 820" xmlns="http://www.w3.org/2000/svg">
+      <!-- ========== ENTITIES (chỉ tên, hình chữ nhật) ========== -->
+      <!-- KHACH_HANG -->
+      <rect class="entity-rect" x="60" y="188" width="100" height="40" rx="4"/>
+      <text class="entity-title" x="110" y="213" text-anchor="middle">KHACH_HANG</text>
+
+      <!-- LOAI_PHONG -->
+      <rect class="entity-rect" x="60" y="408" width="100" height="40" rx="4"/>
+      <text class="entity-title" x="110" y="433" text-anchor="middle">LOAI_PHONG</text>
+
+      <!-- DAT_PHONG -->
+      <rect class="entity-rect" x="340" y="188" width="100" height="40" rx="4"/>
+      <text class="entity-title" x="390" y="213" text-anchor="middle">DAT_PHONG</text>
+
+      <!-- PHONG -->
+      <rect class="entity-rect" x="340" y="408" width="100" height="40" rx="4"/>
+      <text class="entity-title" x="390" y="433" text-anchor="middle">PHONG</text>
+
+      <!-- HOA_DON -->
+      <rect class="entity-rect" x="620" y="188" width="100" height="40" rx="4"/>
+      <text class="entity-title" x="670" y="213" text-anchor="middle">HOA_DON</text>
+
+      <!-- THANH_TOAN -->
+      <rect class="entity-rect" x="900" y="188" width="100" height="40" rx="4"/>
+      <text class="entity-title" x="950" y="213" text-anchor="middle">THANH_TOAN</text>
+
+      <!-- ========== THUỘC TÍNH (oval nối với thực thể, PK = oval màu đậm) ========== -->
+      <!-- KHACH_HANG attributes (bên trái entity, cách đều) -->
+      <ellipse class="attr-oval-pk" cx="30" cy="150" rx="28" ry="14"/>
+      <text class="attr-text-pk" x="30" y="153" text-anchor="middle">ma_khach_hang</text>
+      <path class="link" d="M 58 150 L 60 188"/>
+      <ellipse class="attr-oval" cx="30" cy="100" rx="22" ry="12"/>
+      <text class="attr-text" x="30" y="103" text-anchor="middle">ho_ten</text>
+      <path class="link" d="M 52 100 L 60 188"/>
+      <ellipse class="attr-oval" cx="30" cy="60" rx="26" ry="12"/>
+      <text class="attr-text" x="30" y="63" text-anchor="middle">so_dien_thoai</text>
+      <path class="link" d="M 56 60 L 60 188"/>
+      <ellipse class="attr-oval" cx="30" cy="200" rx="20" ry="11"/>
+      <text class="attr-text" x="30" y="203" text-anchor="middle">email</text>
+      <path class="link" d="M 50 200 L 60 188"/>
+      <ellipse class="attr-oval" cx="30" cy="240" rx="24" ry="11"/>
+      <text class="attr-text" x="30" y="243" text-anchor="middle">so_giay_to</text>
+      <path class="link" d="M 54 240 L 60 228"/>
+
+      <!-- LOAI_PHONG attributes (cách đều) -->
+      <ellipse class="attr-oval-pk" cx="30" cy="388" rx="30" ry="14"/>
+      <text class="attr-text-pk" x="30" y="391" text-anchor="middle">ma_loai_phong</text>
+      <path class="link" d="M 60 388 L 60 418"/>
+      <ellipse class="attr-oval" cx="30" cy="348" rx="28" ry="12"/>
+      <text class="attr-text" x="30" y="351" text-anchor="middle">ten_loai_phong</text>
+      <path class="link" d="M 58 348 L 60 408"/>
+      <ellipse class="attr-oval" cx="30" cy="458" rx="22" ry="11"/>
+      <text class="attr-text" x="30" y="461" text-anchor="middle">gia_phong</text>
+      <path class="link" d="M 52 458 L 60 428"/>
+      <ellipse class="attr-oval" cx="30" cy="508" rx="18" ry="10"/>
+      <text class="attr-text" x="30" y="511" text-anchor="middle">mo_ta</text>
+      <path class="link" d="M 48 508 L 60 448"/>
+
+      <!-- DAT_PHONG attributes (phân tầng dưới entity, không chồng) -->
+      <ellipse class="attr-oval-pk" cx="390" cy="252" rx="28" ry="12"/>
+      <text class="attr-text-pk" x="390" y="255" text-anchor="middle">ma_dat_phong</text>
+      <path class="link" d="M 390 240 L 390 228"/>
+      <ellipse class="attr-oval" cx="340" cy="282" rx="32" ry="12"/>
+      <text class="attr-text" x="340" y="285" text-anchor="middle">ngay_nhan_phong</text>
+      <path class="link" d="M 372 282 L 340 228"/>
+      <ellipse class="attr-oval" cx="440" cy="282" rx="30" ry="12"/>
+      <text class="attr-text" x="440" y="285" text-anchor="middle">ngay_tra_phong</text>
+      <path class="link" d="M 410 282 L 440 228"/>
+      <ellipse class="attr-oval" cx="390" cy="322" rx="22" ry="11"/>
+      <text class="attr-text" x="390" y="325" text-anchor="middle">trang_thai</text>
+      <path class="link" d="M 390 311 L 390 228"/>
+
+      <!-- PHONG attributes (trái/phải, cách đều) -->
+      <ellipse class="attr-oval-pk" cx="300" cy="408" rx="24" ry="12"/>
+      <text class="attr-text-pk" x="300" y="411" text-anchor="middle">ma_phong</text>
+      <path class="link" d="M 324 408 L 340 428"/>
+      <ellipse class="attr-oval" cx="300" cy="368" rx="22" ry="11"/>
+      <text class="attr-text" x="300" y="371" text-anchor="middle">so_phong</text>
+      <path class="link" d="M 322 368 L 340 408"/>
+      <ellipse class="attr-oval" cx="480" cy="388" rx="28" ry="12"/>
+      <text class="attr-text" x="480" y="391" text-anchor="middle">trang_thai_phong</text>
+      <path class="link" d="M 452 388 L 440 428"/>
+      <ellipse class="attr-oval" cx="480" cy="438" rx="28" ry="11"/>
+      <text class="attr-text" x="480" y="441" text-anchor="middle">ma_loai_phong</text>
+      <path class="link" d="M 452 438 L 440 428"/>
+
+      <!-- HOA_DON attributes (phân tầng, không chồng) -->
+      <ellipse class="attr-oval-pk" cx="670" cy="252" rx="26" ry="12"/>
+      <text class="attr-text-pk" x="670" y="255" text-anchor="middle">ma_hoa_don</text>
+      <path class="link" d="M 670 240 L 670 228"/>
+      <ellipse class="attr-oval" cx="620" cy="282" rx="22" ry="11"/>
+      <text class="attr-text" x="620" y="285" text-anchor="middle">tong_tien</text>
+      <path class="link" d="M 642 282 L 620 228"/>
+      <ellipse class="attr-oval" cx="720" cy="282" rx="20" ry="11"/>
+      <text class="attr-text" x="720" y="285" text-anchor="middle">ngay_lap</text>
+      <path class="link" d="M 700 282 L 720 228"/>
+
+      <!-- THANH_TOAN attributes (phân tầng và hai bên, không chồng) -->
+      <ellipse class="attr-oval-pk" cx="950" cy="252" rx="28" ry="12"/>
+      <text class="attr-text-pk" x="950" y="255" text-anchor="middle">ma_thanh_toan</text>
+      <path class="link" d="M 950 240 L 950 228"/>
+      <ellipse class="attr-oval" cx="890" cy="282" rx="26" ry="12"/>
+      <text class="attr-text" x="890" y="285" text-anchor="middle">ngay_thanh_toan</text>
+      <path class="link" d="M 916 282 L 900 228"/>
+      <ellipse class="attr-oval" cx="950" cy="312" rx="24" ry="11"/>
+      <text class="attr-text" x="950" y="315" text-anchor="middle">phuong_thuc</text>
+      <path class="link" d="M 950 301 L 950 228"/>
+      <ellipse class="attr-oval" cx="1010" cy="282" rx="20" ry="11"/>
+      <text class="attr-text" x="1010" y="285" text-anchor="middle">so_tien</text>
+      <path class="link" d="M 990 282 L 1000 228"/>
+      <ellipse class="attr-oval" cx="950" cy="352" rx="22" ry="11"/>
+      <text class="attr-text" x="950" y="355" text-anchor="middle">trang_thai</text>
+      <path class="link" d="M 950 341 L 950 228"/>
+
+      <!-- ========== QUAN HỆ (hình thoi) — khoảng cách rộng, đường nối dài ========== -->
+      <!-- thuc_hien: KHACH_HANG (160,208) — diamond — DAT_PHONG (340,208) -->
+      <polygon class="diamond" points="230,198 260,218 230,238 200,218"/>
+      <text class="rel-text" x="230" y="225" text-anchor="middle">thực hiện</text>
+      <path class="link" d="M 160 208 L 200 218"/>
+      <text class="cardinality" x="168" y="210">(1,1)</text>
+      <path class="link" d="M 260 218 L 340 208"/>
+      <text class="cardinality" x="288" y="210">(0,n)</text>
+
+      <!-- bao_gom: LOAI_PHONG (160,428) — diamond — PHONG (340,428) -->
+      <polygon class="diamond" points="230,418 260,438 230,458 200,438"/>
+      <text class="rel-text" x="230" y="445" text-anchor="middle">bao gồm</text>
+      <path class="link" d="M 160 428 L 200 438"/>
+      <text class="cardinality" x="168" y="430">(1,1)</text>
+      <path class="link" d="M 260 438 L 340 428"/>
+      <text class="cardinality" x="288" y="430">(0,n)</text>
+
+      <!-- duoc_gan: PHONG (390,428) — diamond — DAT_PHONG (390,208) -->
+      <polygon class="diamond" points="390,298 420,318 390,338 360,318"/>
+      <text class="rel-text" x="390" y="335" text-anchor="middle">được gán</text>
+      <path class="link" d="M 390 428 L 390 338"/>
+      <text class="cardinality" x="378" y="378">(1,1)</text>
+      <path class="link" d="M 390 298 L 390 228"/>
+      <text class="cardinality" x="398" y="258">(0,n)</text>
+
+      <!-- tao: DAT_PHONG (440,208) — diamond — HOA_DON (620,208) -->
+      <polygon class="diamond" points="510,198 540,218 510,238 480,218"/>
+      <text class="rel-text" x="510" y="225" text-anchor="middle">tạo</text>
+      <path class="link" d="M 440 208 L 480 218"/>
+      <text class="cardinality" x="452" y="210">(1,1)</text>
+      <path class="link" d="M 540 218 L 620 208"/>
+      <text class="cardinality" x="568" y="210">(1,1)</text>
+
+      <!-- thanh_toan: HOA_DON (720,208) — diamond — THANH_TOAN (900,208) -->
+      <polygon class="diamond" points="790,198 820,218 790,238 760,218"/>
+      <text class="rel-text" x="790" y="225" text-anchor="middle">thanh toán</text>
+      <path class="link" d="M 720 208 L 760 218"/>
+      <text class="cardinality" x="732" y="210">(1,1)</text>
+      <path class="link" d="M 820 218 L 900 208"/>
+      <text class="cardinality" x="848" y="210">(0,n)</text>
+
+      <!-- ========== Chú thích ========== -->
+      <rect x="60" y="560" width="380" height="220" fill="#fafafa" stroke="#ddd" rx="4" stroke-width="1"/>
+      <text class="entity-title" x="72" y="582">Chú thích</text>
+      <text class="attr-text" x="72" y="602">Thuộc tính khóa chính (PK): oval màu đậm</text>
+      <text class="attr-text" x="72" y="618">○ Thuộc tính thường: oval trắng, nối với thực thể bằng đường thẳng</text>
+      <text class="attr-text" x="72" y="638">(min,max): bản số — (1,1) bắt buộc một, (0,n) tùy chọn nhiều</text>
+      <text class="attr-text" x="72" y="654">Hình chữ nhật: thực thể; Hình thoi: quan hệ</text>
+      <text class="attr-text" x="72" y="674">Dữ liệu từ RDM — Hotel Management System (Three Flower Hotel)</text>
+    </svg>
+  </div>
+  <p style="margin-top: 16px; font-size: 0.875rem; color: #666;">
+    Mở file này trong trình duyệt để xem ERD. Để vẽ lại trên <a href="https://erdplus.com/trial" target="_blank" rel="noopener">ERDPlus Trial</a>: tạo Entity, thêm Attribute (oval nối với entity), nối Relationship (hình thoi), đặt bản số (min,max).
+  </p>
+</body>
+</html>
