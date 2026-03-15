@@ -18,7 +18,7 @@ export default function Payments() {
   const [modal, setModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [editing, setEditing] = useState(null);
-  const [form, setForm] = useState({ ma_hoa_don: '', phuong_thuc: 'Tiền mặt', so_tien: '' });
+  const [form, setForm] = useState({ ma_hoa_don: '', phuong_thuc: 'Tiền mặt' });
   const [editForm, setEditForm] = useState({ trang_thai: '', phuong_thuc: '' });
 
   const load = () => {
@@ -33,9 +33,12 @@ export default function Payments() {
     defaultSort: 'ma_thanh_toan',
     defaultDir: 'desc',
   });
+  const selectedInvoice = invoices.find(
+    (inv) => String(inv.ma_hoa_don) === String(form.ma_hoa_don)
+  );
 
   const openCreate = () => {
-    setForm({ ma_hoa_don: '', phuong_thuc: 'Tiền mặt', so_tien: '' });
+    setForm({ ma_hoa_don: '', phuong_thuc: 'Tiền mặt' });
     setModal(true);
   };
 
@@ -47,10 +50,11 @@ export default function Payments() {
 
   const handleCreate = async (e) => {
     e.preventDefault();
+    const soTien = Number(selectedInvoice?.tong_tien || 0);
     await api.post('/thanh-toan', {
       ma_hoa_don: parseInt(form.ma_hoa_don),
       phuong_thuc: form.phuong_thuc,
-      so_tien: parseFloat(form.so_tien),
+      so_tien: soTien,
     });
     setModal(false);
     load();
@@ -153,9 +157,12 @@ export default function Payments() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Số tiền (VNĐ) *</label>
-            <input type="number" value={form.so_tien} onChange={set('so_tien')} required min="0"
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none" />
+            <label className="block text-sm font-medium text-gray-700 mb-1">Số tiền thanh toán</label>
+            <div className="w-full px-4 py-2.5 border border-gray-200 bg-gray-50 rounded-lg text-gray-800">
+              {selectedInvoice
+                ? `${Number(selectedInvoice.tong_tien).toLocaleString('vi-VN')} ₫`
+                : 'Vui lòng chọn hóa đơn'}
+            </div>
           </div>
           <div className="flex justify-end gap-3 pt-2">
             <button type="button" onClick={() => setModal(false)} className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">Hủy</button>
