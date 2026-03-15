@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import api from '../../api/axios';
 import Modal from '../../components/Modal';
 import { HiPlus, HiPencil, HiTrash } from 'react-icons/hi';
+// NEW: imports for search and sortable table
+import useTableControls from '../../hooks/useTableControls';
+import TableToolbar, { SortableHeader } from '../../components/TableToolbar';
 
 export default function Invoices() {
   const [items, setItems] = useState([]);
@@ -17,6 +20,13 @@ export default function Invoices() {
     api.get('/dat-phong').then((r) => setBookings(r.data));
   };
   useEffect(() => { load(); }, []);
+
+  // NEW: table controls for search and sort
+  const { search, setSearch, sortKey, sortDir, toggleSort, filtered } = useTableControls(items, {
+    searchFields: ['ho_ten_khach', 'so_phong'],
+    defaultSort: 'ma_hoa_don',
+    defaultDir: 'desc',
+  });
 
   const existingBookingIds = new Set(items.map((i) => i.ma_dat_phong));
   const availableBookings = bookings.filter(
@@ -59,21 +69,30 @@ export default function Invoices() {
         </button>
       </div>
 
+      {/* NEW: search toolbar */}
+      <TableToolbar search={search} onSearch={setSearch} />
+
       <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-gray-50 text-gray-600">
             <tr>
-              <th className="px-5 py-3 text-left font-medium">Mã HĐ</th>
-              <th className="px-5 py-3 text-left font-medium">Mã ĐP</th>
-              <th className="px-5 py-3 text-left font-medium">Khách hàng</th>
+              {/* OLD: <th className="px-5 py-3 text-left font-medium">Mã HĐ</th> */}
+              <SortableHeader label="Mã HĐ" sortKey="ma_hoa_don" currentSort={sortKey} currentDir={sortDir} onSort={toggleSort} />
+              {/* OLD: <th className="px-5 py-3 text-left font-medium">Mã ĐP</th> */}
+              <SortableHeader label="Mã ĐP" sortKey="ma_dat_phong" currentSort={sortKey} currentDir={sortDir} onSort={toggleSort} />
+              {/* OLD: <th className="px-5 py-3 text-left font-medium">Khách hàng</th> */}
+              <SortableHeader label="Khách hàng" sortKey="ho_ten_khach" currentSort={sortKey} currentDir={sortDir} onSort={toggleSort} />
               <th className="px-5 py-3 text-left font-medium">Phòng</th>
-              <th className="px-5 py-3 text-left font-medium">Tổng tiền</th>
-              <th className="px-5 py-3 text-left font-medium">Ngày lập</th>
+              {/* OLD: <th className="px-5 py-3 text-left font-medium">Tổng tiền</th> */}
+              <SortableHeader label="Tổng tiền" sortKey="tong_tien" currentSort={sortKey} currentDir={sortDir} onSort={toggleSort} />
+              {/* OLD: <th className="px-5 py-3 text-left font-medium">Ngày lập</th> */}
+              <SortableHeader label="Ngày lập" sortKey="ngay_lap" currentSort={sortKey} currentDir={sortDir} onSort={toggleSort} />
               <th className="px-5 py-3 text-right font-medium">Thao tác</th>
             </tr>
           </thead>
           <tbody className="divide-y">
-            {items.map((item) => (
+            {/* NEW: use filtered instead of items for search/sort */}
+            {filtered.map((item) => (
               <tr key={item.ma_hoa_don} className="hover:bg-gray-50">
                 <td className="px-5 py-3 font-medium">#{item.ma_hoa_don}</td>
                 <td className="px-5 py-3">#{item.ma_dat_phong}</td>

@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import api from '../../api/axios';
 import Modal from '../../components/Modal';
 import { HiPlus, HiPencil, HiXCircle } from 'react-icons/hi';
+// NEW: imports for table controls
+import useTableControls from '../../hooks/useTableControls';
+import TableToolbar, { SortableHeader } from '../../components/TableToolbar';
 
 const statusColors = {
   'Đã xác nhận': 'bg-green-100 text-green-700',
@@ -25,6 +28,13 @@ export default function Bookings() {
     api.get('/khach-hang').then((r) => setCustomers(r.data));
   };
   useEffect(() => { load(); }, []);
+
+  // NEW: table controls for search, filter, sort
+  const { search, setSearch, filters, setFilter, sortKey, sortDir, toggleSort, filtered } = useTableControls(items, {
+    searchFields: ['ho_ten_khach', 'so_phong'],
+    defaultSort: 'ma_dat_phong',
+    defaultDir: 'desc',
+  });
 
   const openCreate = () => {
     setForm({ ma_khach_hang: '', ma_phong: '', ngay_nhan_phong: '', ngay_tra_phong: '' });
@@ -73,20 +83,32 @@ export default function Bookings() {
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
+        {/* NEW: TableToolbar for search and filter */}
+        <TableToolbar
+          search={search}
+          onSearch={setSearch}
+          filters={filters}
+          onFilter={setFilter}
+          filterOptions={[
+            { key: 'trang_thai', label: 'Trạng thái', options: ['Đang chờ', 'Đã xác nhận', 'Đã hủy'] },
+          ]}
+        />
         <table className="w-full text-sm">
           <thead className="bg-gray-50 text-gray-600">
             <tr>
-              <th className="px-5 py-3 text-left font-medium">Mã</th>
-              <th className="px-5 py-3 text-left font-medium">Khách hàng</th>
-              <th className="px-5 py-3 text-left font-medium">Phòng</th>
-              <th className="px-5 py-3 text-left font-medium">Nhận phòng</th>
-              <th className="px-5 py-3 text-left font-medium">Trả phòng</th>
+              {/* OLD: <th className="px-5 py-3 text-left font-medium">Mã</th> */}
+              <SortableHeader label="Mã" sortKey="ma_dat_phong" currentSort={sortKey} currentDir={sortDir} onSort={toggleSort} />
+              <SortableHeader label="Khách hàng" sortKey="ho_ten_khach" currentSort={sortKey} currentDir={sortDir} onSort={toggleSort} />
+              <SortableHeader label="Phòng" sortKey="so_phong" currentSort={sortKey} currentDir={sortDir} onSort={toggleSort} />
+              <SortableHeader label="Nhận phòng" sortKey="ngay_nhan_phong" currentSort={sortKey} currentDir={sortDir} onSort={toggleSort} />
+              <SortableHeader label="Trả phòng" sortKey="ngay_tra_phong" currentSort={sortKey} currentDir={sortDir} onSort={toggleSort} />
               <th className="px-5 py-3 text-left font-medium">Trạng thái</th>
               <th className="px-5 py-3 text-right font-medium">Thao tác</th>
             </tr>
           </thead>
           <tbody className="divide-y">
-            {items.map((item) => (
+            {/* OLD: items.map */}
+            {filtered.map((item) => (
               <tr key={item.ma_dat_phong} className="hover:bg-gray-50">
                 <td className="px-5 py-3 font-medium">#{item.ma_dat_phong}</td>
                 <td className="px-5 py-3">{item.ho_ten_khach}</td>

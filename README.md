@@ -13,6 +13,7 @@ Hệ thống web app quản lý khách sạn **Three Flower Hotel** hỗ trợ h
 - [Phân quyền vai trò](#phân-quyền-vai-trò)
 - [Hướng dẫn cài đặt](#hướng-dẫn-cài-đặt)
 - [Xử lý lỗi: Port đã được sử dụng](#xử-lý-lỗi-port-đã-được-sử-dụng)
+- [Xử lý lỗi: ModuleNotFoundError: No module named 'backend'](#xử-lý-lỗi-modulenotfounderror-no-module-named-backend)
 - [Hướng dẫn sử dụng](#hướng-dẫn-sử-dụng)
 - [Tài liệu thiết kế](#tài-liệu-thiết-kế)
 
@@ -425,8 +426,11 @@ Mở **hai terminal**:
 **Terminal 1 - Backend** (từ thư mục gốc):
 
 ```bash
-python -m uvicorn backend.main:app --reload --port 8000
+# Thêm PYTHONPATH để process reloader của uvicorn tìm được package backend
+PYTHONPATH=. python -m uvicorn backend.main:app --reload --port 8000
 ```
+
+Nếu không dùng `PYTHONPATH=.` có thể gặp `ModuleNotFoundError: No module named 'backend'` khi uvicorn spawn process con (xem mục lỗi bên dưới).
 
 **Terminal 2 - Frontend** (từ thư mục `frontend`):
 
@@ -477,8 +481,22 @@ lsof -i :8000
 Không có output thì port đã trống. Chạy lại backend:
 
 ```bash
-python -m uvicorn backend.main:app --reload --port 8000
+PYTHONPATH=. python -m uvicorn backend.main:app --reload --port 8000
 ```
+
+---
+
+## Xử lý lỗi: ModuleNotFoundError: No module named 'backend'
+
+Khi chạy backend với `--reload`, uvicorn tạo process con để load app. Process con có thể không có thư mục gốc project trong `sys.path`, nên không import được package `backend`.
+
+**Cách sửa:** Chạy với `PYTHONPATH` trỏ tới thư mục gốc (đứng tại thư mục gốc):
+
+```bash
+PYTHONPATH=. python -m uvicorn backend.main:app --reload --port 8000
+```
+
+Trên Windows (PowerShell): `$env:PYTHONPATH="."; python -m uvicorn backend.main:app --reload --port 8000`
 
 ---
 

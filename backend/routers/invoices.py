@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session, joinedload
 from typing import List
 
 from ..database import get_db
-from ..models import HoaDon, DatPhong, TaiKhoan
+from ..models import HoaDon, DatPhong, Phong, TaiKhoan
 from ..schemas import HoaDonCreate, HoaDonOut, HoaDonBase
 from ..auth import get_current_user, require_role
 
@@ -67,7 +67,7 @@ def create_invoice(
 ):
     booking = (
         db.query(DatPhong)
-        .options(joinedload(DatPhong.phong).joinedload("loai_phong"))
+        .options(joinedload(DatPhong.phong).joinedload(Phong.loai_phong))
         .get(data.ma_dat_phong)
     )
     if not booking:

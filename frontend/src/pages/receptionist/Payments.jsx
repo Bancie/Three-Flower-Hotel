@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import api from '../../api/axios';
 import Modal from '../../components/Modal';
 import { HiPlus, HiPencil, HiTrash } from 'react-icons/hi';
+// new code: table controls imports
+import useTableControls from '../../hooks/useTableControls';
+import TableToolbar, { SortableHeader } from '../../components/TableToolbar';
 
 const statusColors = {
   'Đã thanh toán': 'bg-green-100 text-green-700',
@@ -23,6 +26,13 @@ export default function Payments() {
     api.get('/hoa-don').then((r) => setInvoices(r.data));
   };
   useEffect(() => { load(); }, []);
+
+  // new code: table controls for search, filter, sort
+  const { search, setSearch, filters, setFilter, sortKey, sortDir, toggleSort, filtered } = useTableControls(items, {
+    searchFields: ['ma_hoa_don', 'phuong_thuc'],
+    defaultSort: 'ma_thanh_toan',
+    defaultDir: 'desc',
+  });
 
   const openCreate = () => {
     setForm({ ma_hoa_don: '', phuong_thuc: 'Tiền mặt', so_tien: '' });
@@ -70,21 +80,34 @@ export default function Payments() {
         </button>
       </div>
 
+      {/* new code: TableToolbar for search and filters */}
+      <TableToolbar
+        search={search}
+        onSearch={setSearch}
+        filters={filters}
+        onFilter={setFilter}
+        filterOptions={[
+          { key: 'trang_thai', label: 'Trạng thái', options: ['Đã thanh toán', 'Chờ thanh toán', 'Đã hủy'] },
+          { key: 'phuong_thuc', label: 'Phương thức', options: ['Tiền mặt', 'Chuyển khoản', 'Thẻ tín dụng'] },
+        ]}
+      />
+
       <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-gray-50 text-gray-600">
             <tr>
-              <th className="px-5 py-3 text-left font-medium">Mã TT</th>
-              <th className="px-5 py-3 text-left font-medium">Mã HĐ</th>
-              <th className="px-5 py-3 text-left font-medium">Ngày TT</th>
+              {/* new code: sortable headers for Mã TT, Mã HĐ, Ngày TT, Số tiền */}
+              <SortableHeader label="Mã TT" sortKey="ma_thanh_toan" currentSort={sortKey} currentDir={sortDir} onSort={toggleSort} />
+              <SortableHeader label="Mã HĐ" sortKey="ma_hoa_don" currentSort={sortKey} currentDir={sortDir} onSort={toggleSort} />
+              <SortableHeader label="Ngày TT" sortKey="ngay_thanh_toan" currentSort={sortKey} currentDir={sortDir} onSort={toggleSort} />
               <th className="px-5 py-3 text-left font-medium">Phương thức</th>
-              <th className="px-5 py-3 text-left font-medium">Số tiền</th>
+              <SortableHeader label="Số tiền" sortKey="so_tien" currentSort={sortKey} currentDir={sortDir} onSort={toggleSort} />
               <th className="px-5 py-3 text-left font-medium">Trạng thái</th>
               <th className="px-5 py-3 text-right font-medium">Thao tác</th>
             </tr>
           </thead>
           <tbody className="divide-y">
-            {items.map((item) => (
+            {filtered.map((item) => (
               <tr key={item.ma_thanh_toan} className="hover:bg-gray-50">
                 <td className="px-5 py-3 font-medium">#{item.ma_thanh_toan}</td>
                 <td className="px-5 py-3">#{item.ma_hoa_don}</td>

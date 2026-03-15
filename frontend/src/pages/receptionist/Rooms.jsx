@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import api from '../../api/axios';
 import Modal from '../../components/Modal';
 import { HiPlus, HiPencil, HiTrash } from 'react-icons/hi';
+// new code: table controls imports
+import useTableControls from '../../hooks/useTableControls';
+import TableToolbar, { SortableHeader } from '../../components/TableToolbar';
 
 const statusColors = {
   'Trống': 'bg-green-100 text-green-700',
@@ -21,6 +24,12 @@ export default function Rooms() {
     api.get('/loai-phong').then((r) => setRoomTypes(r.data));
   };
   useEffect(() => { load(); }, []);
+
+  // new code: table controls for search, filter, sort
+  const { search, setSearch, filters, setFilter, sortKey, sortDir, toggleSort, filtered } = useTableControls(items, {
+    searchFields: ['so_phong', 'ten_loai_phong'],
+    defaultSort: 'ma_phong',
+  });
 
   const openCreate = () => {
     setEditing(null);
@@ -64,19 +73,37 @@ export default function Rooms() {
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
+        {/* new code: TableToolbar for search and filter */}
+        <div className="px-5 pt-4">
+          <TableToolbar
+          search={search}
+          onSearch={setSearch}
+          filters={filters}
+          onFilter={setFilter}
+          filterOptions={[
+            { key: 'trang_thai_phong', label: 'Trạng thái', options: ['Trống', 'Đã đặt', 'Đang sử dụng'] },
+          ]}
+        />
+        </div>
         <table className="w-full text-sm">
           <thead className="bg-gray-50 text-gray-600">
             <tr>
-              <th className="px-5 py-3 text-left font-medium">Mã</th>
+              {/* new code: sortable headers */}
+              <SortableHeader label="Mã" sortKey="ma_phong" currentSort={sortKey} currentDir={sortDir} onSort={toggleSort} />
+              <SortableHeader label="Số phòng" sortKey="so_phong" currentSort={sortKey} currentDir={sortDir} onSort={toggleSort} />
+              <SortableHeader label="Loại phòng" sortKey="ten_loai_phong" currentSort={sortKey} currentDir={sortDir} onSort={toggleSort} />
+              <SortableHeader label="Giá" sortKey="gia_phong" currentSort={sortKey} currentDir={sortDir} onSort={toggleSort} />
+              {/* old code: <th className="px-5 py-3 text-left font-medium">Mã</th>
               <th className="px-5 py-3 text-left font-medium">Số phòng</th>
               <th className="px-5 py-3 text-left font-medium">Loại phòng</th>
-              <th className="px-5 py-3 text-left font-medium">Giá</th>
+              <th className="px-5 py-3 text-left font-medium">Giá</th> */}
               <th className="px-5 py-3 text-left font-medium">Trạng thái</th>
               <th className="px-5 py-3 text-right font-medium">Thao tác</th>
             </tr>
           </thead>
           <tbody className="divide-y">
-            {items.map((item) => (
+            {/* new code: filtered instead of items */}
+            {filtered.map((item) => (
               <tr key={item.ma_phong} className="hover:bg-gray-50">
                 <td className="px-5 py-3 font-medium">{item.ma_phong}</td>
                 <td className="px-5 py-3 font-medium">{item.so_phong}</td>
