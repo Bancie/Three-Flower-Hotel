@@ -1,3 +1,21 @@
+-- Cơ sở dữ liệu: hotel_bahoa
+--
+-- Kết nối MySQL:
+-- - Loại CSDL: MySQL
+-- - Tên kết nối: hotel
+-- - Nhóm kết nối: (không đặt)
+-- - Kết nối qua: Server và cổng
+-- - Máy chủ: localhost
+-- - Cổng: 3307
+-- - Cơ sở dữ liệu: hotel_bahoa
+-- - Người dùng: root
+-- - Mật khẩu: bahoa123
+-- - Giao thức xác thực: mặc định (default)
+-- - SSL: tắt
+-- - Qua SSH: tắt
+-- - Thời gian chờ kết nối: (mặc định / không đặt)
+-- - Giới hạn số bản ghi mặc định khi xem: 500
+
 USE `hotel_bahoa`;
 
 CREATE TABLE `KHACH_HANG` (
